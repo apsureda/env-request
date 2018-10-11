@@ -1,0 +1,12 @@
+steps:
+
+- name: gcr.io/apszaz-dft-commons/terraform
+  args:
+  - init
+  - terraform
+
+- name: gcr.io/apszaz-dft-commons/terraform
+  args:
+  - apply
+  - -var-file=params.tfvars
+  - terraform
