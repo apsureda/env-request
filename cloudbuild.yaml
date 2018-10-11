@@ -9,4 +9,5 @@ steps:
   args:
   - apply
   - -var-file=params.tfvars
+  - -auto-approve
   - terraform
