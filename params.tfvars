@@ -1,5 +1,6 @@
-prefix = "apszaz-dft-testprj2"
+dft_dept = "ddt"
+dft_app_code = "voldemort"
+gcp_project_prefix = "dft-ddt-voldemort"
 gcp_folder_id = "815952447001"
-gcp_project_name = "apszaz-dft-testprj1"
 gcp_billing_account_id = "0131D6-94FD9F-065EAB"
 gcp_region = "europe-west4"

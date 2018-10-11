@@ -3,9 +3,9 @@ resource "random_id" "infrastructure_id" {
 }
 
 resource "google_project" "infrastructure" {
-  name                = "${var.gcp_project_name}"
+  name                = "${var.gcp_project_prefix}"
   folder_id           = "${var.gcp_folder_id}"
   billing_account     = "${var.gcp_billing_account_id}"
-  project_id          = "${var.gcp_project_name}-${random_id.infrastructure_id.hex}"
+  project_id          = "${var.gcp_project_prefix}-${random_id.infrastructure_id.hex}"
   auto_create_network = false
 }
