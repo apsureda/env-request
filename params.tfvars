@@ -1,4 +1,4 @@
-prefix = "apszaz-dft-testprj1"
+prefix = "apszaz-dft-testprj2"
 gcp_folder_id = "815952447001"
 gcp_project_name = "apszaz-dft-testprj1"
 gcp_billing_account_id = "0131D6-94FD9F-065EAB"
