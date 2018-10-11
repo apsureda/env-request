@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
     bucket = "apszaz-tfstate"
-    prefix = "dft-ddt-voldemort"
+    prefix = "dft-ddt-dumbledore"
   }
 }

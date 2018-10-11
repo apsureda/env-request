@@ -3,6 +3,6 @@ data "terraform_remote_state" "pos_net" {
 
   config {
     bucket = "apszaz-tfstate"
-    prefix = "dft-ddt-voldemort"
+    prefix = "dft-ddt-dumbledore"
   }
 }
