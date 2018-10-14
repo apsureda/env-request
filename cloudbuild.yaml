@@ -1,7 +1,7 @@
 steps:
 
-- name: 'ubuntu'
-  args: ['/usr/bin/python3', 'run_requests.py']
+- name: 'debian'
+  args: ['/usr/bin/python', 'run_requests.py']
 
 - name: gcr.io/apszaz-dft-commons/terraform
   args:
