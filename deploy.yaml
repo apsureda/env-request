@@ -1,8 +1,5 @@
 steps:
 
-- name: 'ubuntu'
-  args: ['bash', './run_requests.py']
-
 - name: gcr.io/apszaz-dft-commons/terraform
   args:
   - init
@@ -10,8 +7,9 @@ steps:
 
 - name: gcr.io/apszaz-dft-commons/terraform
   args:
-  - plan
-  - -var-file=terraform/params.tfvars
+  - apply
+  - -var-file=params.tfvars
   - -auto-approve
   - terraform
 
+timeout: 20m
