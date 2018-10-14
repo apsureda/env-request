@@ -28,7 +28,7 @@ if not os.path.exists(out_folder):
 for tplfile in os.listdir('templates/sandbox'):
   if tplfile.startswith('.'):
     continue
-  print 'loading template ' + tplfile
+  print('loading template ' + tplfile)
   template = env.get_template(tplfile)
   out_file = open(out_folder + '/' + short_id + '_' + tplfile, "w")
   out_file.write(template.render(current=current))
@@ -39,7 +39,7 @@ env = Environment(loader=FileSystemLoader('templates/common'), trim_blocks=True)
 for tplfile in os.listdir('templates/common'):
   if tplfile.startswith('.'):
     continue
-  print 'loading template ' + tplfile
+  print('loading template ' + tplfile)
   template = env.get_template(tplfile)
   out_file = open(out_folder + '/common_' + tplfile, "w")
   out_file.write(template.render(common=common))
