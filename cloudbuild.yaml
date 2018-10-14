@@ -1,6 +1,9 @@
 steps:
 
-- name: 'python'
+- name: 'ubuntu'
+  args: ['apt', 'install', 'python']
+
+- name: 'ubuntu'
   args: ['python', 'run_requests.py']
 
 - name: gcr.io/apszaz-dft-commons/terraform
