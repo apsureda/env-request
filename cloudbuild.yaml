@@ -12,6 +12,5 @@ steps:
   args:
   - plan
   - -var-file=terraform/params.tfvars
-  - -auto-approve
   - terraform
 
