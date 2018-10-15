@@ -6,7 +6,7 @@ from jinja2 import FileSystemLoader
 
 out_folder = 'terraform/'
 
-env = Environment(loader=FileSystemLoader('templates/sandbox'), trim_blocks=True)
+env = Environment(loader=FileSystemLoader('templates'), trim_blocks=True)
 
 short_id = 'sb-alpalacios2'
 current = {
@@ -29,18 +29,17 @@ for tplfile in os.listdir('templates/sandbox'):
   if tplfile.startswith('.'):
     continue
   print('loading template ' + tplfile)
-  template = env.get_template(tplfile)
+  template = env.get_template('sandbox/' + tplfile)
   out_file = open(out_folder + '/' + short_id + '_' + tplfile, "w")
   out_file.write(template.render(current=current))
   out_file.close()
   
 
-env = Environment(loader=FileSystemLoader('templates/common'), trim_blocks=True)
 for tplfile in os.listdir('templates/common'):
   if tplfile.startswith('.'):
     continue
   print('loading template ' + tplfile)
-  template = env.get_template(tplfile)
+  template = env.get_template('common/' + tplfile)
   out_file = open(out_folder + '/common_' + tplfile, "w")
   out_file.write(template.render(common=common))
   out_file.close()

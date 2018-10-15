@@ -1,5 +1,7 @@
+{% import 'macros.j2' as macros %}
+
 resource "google_project_iam_binding" "{{ current.short_id }}_owners" {
-  project = "${google_project.{{ current.short_id }}.project_id}"
+  project = "{{ macros.project_id(current.short_id) }}"
   role    = "roles/owner"
 
   members = [
@@ -10,7 +12,7 @@ resource "google_project_iam_binding" "{{ current.short_id }}_owners" {
 }
 
 resource "google_project_iam_binding" "{{ current.short_id }}_viewers" {
-  project = "${google_project.{{ current.short_id }}.project_id}"
+  project = "{{ macros.project_id(current.short_id) }}"
   role    = "roles/viewer"
 
   members = [
