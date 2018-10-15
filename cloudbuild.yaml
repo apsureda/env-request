@@ -11,6 +11,6 @@ steps:
 - name: gcr.io/apszaz-dft-commons/terraform
   args:
   - plan
-  - -var-file=terraform/params.tfvars
+  - -var-file=terraform/common_params.tfvars
   - terraform
 
