@@ -5,3 +5,4 @@ terraform apply -auto-approve \
   -var-file="params.tfvars" \
   "terraform"
 
+
