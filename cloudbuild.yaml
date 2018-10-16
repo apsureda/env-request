@@ -1,18 +1,18 @@
-steps:
-
-- name: 'gcr.io/apszaz-dft-commons/dft-python'
-  args: ['run_requests.py']
-
-- name: gcr.io/apszaz-dft-commons/terraform
-  args:
-  - init
-  - terraform
-
-- name: gcr.io/apszaz-dft-commons/terraform
-  args:
-  - plan
-  - -var-file=terraform/common_params.tfvars
-  - terraform
+#steps:
+#
+#- name: 'gcr.io/apszaz-dft-commons/dft-python'
+#  args: ['run_requests.py']
+#
+#- name: gcr.io/apszaz-dft-commons/terraform
+#  args:
+#  - init
+#  - terraform
+#
+#- name: gcr.io/apszaz-dft-commons/terraform
+#  args:
+#  - plan
+#  - -var-file=terraform/common_params.tfvars
+#  - terraform
 
 # Decrypt the file containing the key
 steps:
