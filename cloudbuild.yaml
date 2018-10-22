@@ -1,21 +1,6 @@
-#steps:
-#
-#- name: 'gcr.io/apszaz-dft-commons/dft-python'
-#  args: ['run_requests.py']
-#
-#- name: gcr.io/apszaz-dft-commons/terraform
-#  args:
-#  - init
-#  - terraform
-#
-#- name: gcr.io/apszaz-dft-commons/terraform
-#  args:
-#  - plan
-#  - -var-file=terraform/common_params.tfvars
-#  - terraform
-
-# Decrypt the file containing the key
 steps:
+
+# Decrypt the file containing the SSH key for GitHub authentication
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
   - kms
@@ -45,11 +30,100 @@ steps:
   - name: 'ssh'
     path: /root/.ssh
 
-# Use git clone.
+# clone the git repository. We will push some changes to it.
 - name: 'gcr.io/cloud-builders/git'
   args:
   - clone
   - git@github.com:apsureda/env-request
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# checkout the branch this request came from
+#- name: 'gcr.io/cloud-builders/git'
+#  args:
+#  - checkout
+#  - $BRANCH_NAME
+#  volumes:
+#  - name: 'ssh'
+#    path: /root/.ssh
+
+# run the environments requests file, and issue output to the terraform folder
+# in the branch of the current request.
+- name: 'gcr.io/apszaz-dft-commons/dft-python'
+  args:
+  - run_requests.py
+  - --requests=requests.yaml
+  - --template-dir=templates
+  - --tf-out=/workspace/env-request/terraform
+
+# initialize terraform using the updated terraform folder.
+- name: gcr.io/apszaz-dft-commons/terraform
+  args:
+  - init
+  - /workspace/env-request/terraform
+
+# run a terraform plan to check what changes will be made.
+- name: gcr.io/apszaz-dft-commons/terraform
+  args:
+  - plan
+  - -no-color
+  - -var-file=terraform/common_params.tfvars
+  - /workspace/env-request/terraform
+
+# add the terraform config changes for commit.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/env-request
+  - add
+  - terraform
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Set the user email and name for the commit
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.email
+  - "dft-cicd-pipeline@dft.gov.uk"
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.name
+  - "Automated Build Pipeline"
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# commit the changes, adding the output from the terraform plan as commit comment.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/env-request
+  - commit
+  - --author="John Doe <john@doe.org>"
+  - --file=/workspace/terraform_output.txt
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# push the changes
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/env-request
+  - push
+  - -u
+  - origin
+  - master
   volumes:
   - name: 'ssh'
     path: /root/.ssh

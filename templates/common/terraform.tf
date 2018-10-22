@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "{{ common.gcs_bucket }}"
-    prefix = "{{ common.gcs_prefix }}"
+    bucket = "{{ context.gcs_bucket }}"
+    prefix = "{{ context.gcs_prefix }}"
   }
 }
