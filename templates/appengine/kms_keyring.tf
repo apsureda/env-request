@@ -15,12 +15,12 @@ resource "google_kms_crypto_key" "{{ prj_id }}" {
 }
 
 # only the build pipeline can decrypt data using this key
-resource "google_kms_crypto_key_iam_binding" "crypto_key" {
+resource "google_kms_crypto_key_iam_binding" "{{ prj_id }}_decrypters" {
   crypto_key_id = "{{ prj_id }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyDecrypter"
 
   members = [
-    "serviceAccount:${data.google_project.{{ prj_id }}.number}@cloudbuild.gserviceaccount.com",
+    "serviceAccount:${google_project.{{ prj_id }}.number}@cloudbuild.gserviceaccount.com",
   ]
 }
 
@@ -28,7 +28,7 @@ resource "google_kms_crypto_key_iam_binding" "crypto_key" {
 # gcloud kms encrypt --plaintext-file=secrets.sh \
 #     --ciphertext-file=secrets-development.sh.enc --location=[REGION] \
 #     --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=[PROJECT_ID]
-resource "google_kms_crypto_key_iam_binding" "crypto_key" {
+resource "google_kms_crypto_key_iam_binding" "{{ prj_id }}_encrypters" {
   crypto_key_id = "{{ prj_id }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 

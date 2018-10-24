@@ -1,7 +1,7 @@
 {% import 'macros.j2' as macros %}
 {% for env in ['dev', 'test', 'prod'] %}
 {% set prj_id =  context.short_id + "-" + env  %}
-{% set cloudbuild_sa =  "serviceAccount:${data.google_project." + prj_id + ".number}@cloudbuild.gserviceaccount.com" %}
+{% set cloudbuild_sa =  "serviceAccount:${google_project." + prj_id + ".number}@cloudbuild.gserviceaccount.com" %}
 {% for role in context['permissions'][env] %}
 
 resource "google_project_iam_binding" "{{ context.short_id }}-{{ env }}_{{ role }}" {
