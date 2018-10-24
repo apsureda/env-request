@@ -113,6 +113,8 @@ def prepare_context(context):
   if context['type'] in ['sandbox', 'appengine']:
     context['short_id'] = get_short_id(context)
     context['project_id'] = get_project_id(context)
+    # TODO: replace this ststic ID by dynamic folder from config file
+    context['folder_id'] = '121046915312'
   if context['type'] == 'sandbox':
     # In sandbox environments, operations, managers and the dandbox user are owners
     permissions = {}
