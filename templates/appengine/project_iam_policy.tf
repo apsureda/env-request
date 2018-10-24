@@ -4,7 +4,7 @@
 {% set cloudbuild_sa =  "serviceAccount:${google_project." + prj_id + ".number}@cloudbuild.gserviceaccount.com" %}
 {% for role in context['permissions'][env] %}
 
-resource "google_project_iam_binding" "{{ context.short_id }}-{{ env }}_{{ role }}" {
+resource "google_project_iam_binding" "{{ context.short_id }}-{{ env }}_{{ role | replace(".", "_") }}" {
   project = "{{ macros.project_id(context.short_id, env) }}"
   role    = "roles/{{ role }}"
 
