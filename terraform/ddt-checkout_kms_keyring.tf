@@ -13,7 +13,7 @@ resource "google_kms_crypto_key" "ddt-checkout-dev" {
 
 # only the build pipeline can decrypt data using this key
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-dev_decrypters" {
-  crypto_key_id = "ddt-checkout-dev/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-dev.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyDecrypter"
 
   members = [
@@ -26,11 +26,11 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-dev_decrypters" {
 #     --ciphertext-file=secrets-development.sh.enc --location=[REGION] \
 #     --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=[PROJECT_ID]
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-dev_encrypters" {
-  crypto_key_id = "ddt-checkout-dev/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-dev.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }
 resource "google_kms_key_ring" "ddt-checkout-test" {
@@ -46,7 +46,7 @@ resource "google_kms_crypto_key" "ddt-checkout-test" {
 
 # only the build pipeline can decrypt data using this key
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-test_decrypters" {
-  crypto_key_id = "ddt-checkout-test/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-test.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyDecrypter"
 
   members = [
@@ -59,11 +59,11 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-test_decrypters" {
 #     --ciphertext-file=secrets-development.sh.enc --location=[REGION] \
 #     --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=[PROJECT_ID]
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-test_encrypters" {
-  crypto_key_id = "ddt-checkout-test/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-test.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }
 resource "google_kms_key_ring" "ddt-checkout-prod" {
@@ -79,7 +79,7 @@ resource "google_kms_crypto_key" "ddt-checkout-prod" {
 
 # only the build pipeline can decrypt data using this key
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-prod_decrypters" {
-  crypto_key_id = "ddt-checkout-prod/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-prod.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyDecrypter"
 
   members = [
@@ -92,10 +92,10 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-prod_decrypters" {
 #     --ciphertext-file=secrets-development.sh.enc --location=[REGION] \
 #     --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=[PROJECT_ID]
 resource "google_kms_crypto_key_iam_binding" "ddt-checkout-prod_encrypters" {
-  crypto_key_id = "ddt-checkout-prod/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "${google_project.ddt-checkout-prod.project_id}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }

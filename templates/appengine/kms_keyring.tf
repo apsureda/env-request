@@ -16,7 +16,7 @@ resource "google_kms_crypto_key" "{{ prj_id }}" {
 
 # only the build pipeline can decrypt data using this key
 resource "google_kms_crypto_key_iam_binding" "{{ prj_id }}_decrypters" {
-  crypto_key_id = "{{ prj_id }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "{{ macros.project_id(context.short_id, env) }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyDecrypter"
 
   members = [
@@ -29,7 +29,7 @@ resource "google_kms_crypto_key_iam_binding" "{{ prj_id }}_decrypters" {
 #     --ciphertext-file=secrets-development.sh.enc --location=[REGION] \
 #     --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=[PROJECT_ID]
 resource "google_kms_crypto_key_iam_binding" "{{ prj_id }}_encrypters" {
-  crypto_key_id = "{{ prj_id }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
+  crypto_key_id = "{{ macros.project_id(context.short_id, env) }}/${var.gcp_region}/CLOUDBUILD-SECRETS/CLOUDBUILD-KEY"
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [

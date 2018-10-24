@@ -5,12 +5,12 @@ resource "google_project_iam_binding" "ddt-sb-john-doe_owner" {
   role    = "roles/owner"
 
   members = [
-        "group:gcp-ddt-ops@dft.gov.uk",    "group:gcp-ddt-mamagers@dft.gov.uk",    "user:johndoe@dft.gov.uk",  ]
+        "group:gcp-ddt-ops@apszaz.com",    "group:gcp-ddt-mamagers@apszaz.com",    "user:alfonso@apszaz.com",  ]
 }
 resource "google_project_iam_binding" "ddt-sb-john-doe_viewer" {
   project = "${google_project.ddt-sb-john-doe.project_id}"
   role    = "roles/viewer"
 
   members = [
-        "group:gcp-ddt-developers@dft.gov.uk",  ]
+        "group:gcp-ddt-developers@apszaz.com",  ]
 }
