@@ -6,7 +6,7 @@
 {% for service in ['appengine', 'sql-component', 'storage-api', 'storage-component', 'cloudkms', 'cloudbuild', 'iap', 'sourcerepo'] %}
 
 resource "google_project_service" "{{ prj_id }}_{{ service }}" {
-  project            = "{{ macros.project_id(context.short_id) }}-{{ env }}"
+  project            = "{{ macros.project_id(context.short_id, env) }}"
   service            = "{{ service }}.googleapis.com"
   disable_on_destroy = false
 }

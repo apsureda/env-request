@@ -40,13 +40,13 @@ steps:
     path: /root/.ssh
 
 # checkout the branch this request came from
-#- name: 'gcr.io/cloud-builders/git'
-#  args:
-#  - checkout
-#  - $BRANCH_NAME
-#  volumes:
-#  - name: 'ssh'
-#    path: /root/.ssh
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - checkout
+  - $BRANCH_NAME
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
 
 # run the environments requests file, and issue output to the terraform folder
 # in the branch of the current request.
@@ -116,14 +116,14 @@ steps:
     path: /root/.ssh
 
 # push the changes
-#- name: 'gcr.io/cloud-builders/git'
-#  args:
-#  - -C
-#  - /workspace/env-request
-#  - push
-#  - -u
-#  - origin
-#  - master
-#  volumes:
-#  - name: 'ssh'
-#    path: /root/.ssh
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/env-request
+  - push
+  - -u
+  - origin
+  - master
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
