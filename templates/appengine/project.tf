@@ -8,10 +8,10 @@ resource "random_id" "{{ prj_id }}_id" {
 }
 
 resource "google_project" "{{ prj_id }}" {
-  name                = "{{ context.project_id }}"
+  name                = "{{ context.project_id }}-{{ env }}"
   folder_id           = "{{ context.folder_id }}"
   billing_account     = "${var.gcp_billing_account_id}"
-  project_id          = "{{ context.project_id }}-${random_id.{{ prj_id }}_id.hex}"
+  project_id          = "{{ context.project_id }}-{{ env }}-${random_id.{{ prj_id }}_id.hex}"
 }
 
 resource "google_app_engine_application" "{{ prj_id }}_app" {
