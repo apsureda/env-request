@@ -32,8 +32,3 @@ requests:
   type: 'sandbox'
   dft_bu: 'ddt'
   user_email: 'user:johndoe@dft.gov.uk'
-
-- name: 'jane-doe'
-  type: 'sandbox'
-  dft_bu: 'ddt'
-  user_email: 'user:janedoe@dft.gov.uk'
