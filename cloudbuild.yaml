@@ -68,7 +68,7 @@ steps:
   args:
   - plan
   - -no-color
-  - -var-file=terraform/common_params.tfvars
+  - -var-file=/workspace/env-request/terraform/common_params.tfvars
   - /workspace/env-request/terraform
 
 # add the terraform config changes for commit.
@@ -116,14 +116,14 @@ steps:
     path: /root/.ssh
 
 # push the changes
-- name: 'gcr.io/cloud-builders/git'
-  args:
-  - -C
-  - /workspace/env-request
-  - push
-  - -u
-  - origin
-  - master
-  volumes:
-  - name: 'ssh'
-    path: /root/.ssh
+#- name: 'gcr.io/cloud-builders/git'
+#  args:
+#  - -C
+#  - /workspace/env-request
+#  - push
+#  - -u
+#  - origin
+#  - master
+#  volumes:
+#  - name: 'ssh'
+#    path: /root/.ssh

@@ -1,24 +1,16 @@
 {% import 'macros.j2' as macros %}
 
-resource "google_project_iam_binding" "{{ context.short_id }}_owners" {
-  project = "{{ macros.project_id(context.short_id) }}"
-  role    = "roles/owner"
+{% for role in context['permissions'] %}
+
+resource "google_project_iam_binding" "{{ context.short_id }}_{{ role }}" {
+  project = "{{ macros.project_id(context.short_id, env) }}"
+  role    = "roles/{{ role }}"
 
   members = [
-    {% for member in context.owners %}
+    {% for member in context['permissions'][role] %}
     "{{ member }}",
     {%- endfor %}
   ]
 }
 
-resource "google_project_iam_binding" "{{ context.short_id }}_viewers" {
-  project = "{{ macros.project_id(context.short_id) }}"
-  role    = "roles/viewer"
-
-  members = [
-    {% for member in context.viewers %}
-    
-    "{{ member }}",
-    {%- endfor %}
-  ]
-}
+{%- endfor %}

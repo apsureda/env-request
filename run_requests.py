@@ -115,18 +115,31 @@ def prepare_context(context):
     context['project_id'] = get_project_id(context)
   if context['type'] == 'sandbox':
     # In sandbox environments, operations, managers and the dandbox user are owners
-    owners = []
-    for t in ['team_ops', 'team_mng']:
-      if t in context:
-        owners.extend(context[t])
+    permissions = {}
+    permissions['owner'] = context['team_ops'] + context['team_mng'] 
     if 'user_email' in context:
-      owners.extend([context['user_email']])
-    context['owners'] = owners
+      permissions['owner'].extend([context['user_email']])
     # the rest of the dev team has view access to the sandbox project
-    viewers = []
-    if 'team_dev' in context:
-      viewers.extend(context['team_dev'])
-    context['viewers'] = viewers
+    permissions['viewer'] = context['team_dev']
+    context['permissions'] = permissions
+  elif context['type'] == 'appengine':
+    permissions = {}
+    permissions['dev'] = {}
+    permissions['dev']['appengine.deployer'] = context['team_dev'] 
+    permissions['dev']['appengine.serviceAdmin'] = context['team_dev'] 
+    permissions['dev']['appengine.appAdmin'] = context['team_ops'] + context['team_mng'] 
+    permissions['dev']['appengine.appAdmin'].extend(['[CLOUDBUILD_SA]']) 
+    permissions['test'] = {}
+    permissions['test']['appengine.codeViewer'] = context['team_dev'] + context['team_qa']
+    permissions['test']['appengine.serviceAdmin'] = context['team_ops'] 
+    permissions['test']['appengine.appViewer'] = context['team_mng'] 
+    permissions['test']['appengine.appAdmin'] = ['[CLOUDBUILD_SA]']
+    permissions['prod'] = {}
+    permissions['prod']['appengine.codeViewer'] = context['team_dev'] + context['team_qa']
+    permissions['prod']['appengine.serviceAdmin'] = context['team_ops'] 
+    permissions['prod']['appengine.appViewer'] = context['team_mng']
+    permissions['prod']['appengine.appAdmin'] = ['[CLOUDBUILD_SA]']
+    context['permissions'] = permissions
     
 def get_short_id(req_config):
   base_name = ''
@@ -191,10 +204,10 @@ def main(template_dir, tf_out, requests_file):
     if 'force_update' in v and v['force_update'] == 'true':
       regenerate = True
     file_type = v['type']
+    print json.dumps(v, sort_keys=True, indent=2)
     generate_tf_files(template_dir, tf_out, file_type, v['short_id'], v, regenerate)
 
 if __name__ == '__main__':
   logging.getLogger().setLevel(logging.INFO)
   args = parse_args(sys.argv[1:])
   main(args.template_dir, args.tf_out, args.requests)
-

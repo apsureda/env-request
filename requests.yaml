@@ -9,16 +9,16 @@ defaults:
     region: 'europe-west2'
     billing_account: '0131D6-94FD9F-065EAB'
     team_ops:
-    - gcp-ddt-ops@dft.gov.uk
+    - group:gcp-ddt-ops@dft.gov.uk
     team_dev:
-    - gcp-glb-developers@dft.gov.uk
+    - group:gcp-glb-developers@dft.gov.uk
   ddt:
     team_dev:
-    - gcp-ddt-developers@dft.gov.uk
+    - group:gcp-ddt-developers@dft.gov.uk
     team_qa:
-    - gcp-ddt-qa@dft.gov.uk
+    - group:gcp-ddt-qa@dft.gov.uk
     team_mng:
-    - gcp-ddt-mamagers@dft.gov.uk
+    - group:gcp-ddt-mamagers@dft.gov.uk
 
 requests:
 - name: 'checkout'
@@ -26,8 +26,9 @@ requests:
   dft_bu: 'ddt'
   folder: 'myfolder'
   gae_flex: 'no'
+  source_repo: 'github-apsureda-gae-std'
 
 - name: 'john-doe'
   type: 'sandbox'
   dft_bu: 'ddt'
-  user_email: 'johndoe@dft.gov.uk'
+  user_email: 'user:johndoe@dft.gov.uk'
