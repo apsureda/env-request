@@ -9,9 +9,9 @@ resource "google_cloudbuild_trigger" "{{ prj_id }}" {
   trigger_template {
     branch_name = "{{ branch }}"
     repo_name   = "{{ context.source_repo }}"
-    substitutions {
-        _DB_CONNECTION_STR = "{{ context.db_connection_str }}"
-    }
+  }
+  substitutions {
+    _DB_CONNECTION_STR = "{{ context.db_connection_str }}"
   }
   filename = "cloudbuild.yaml"
 }
