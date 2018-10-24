@@ -42,6 +42,8 @@ steps:
 # checkout the branch this request came from
 - name: 'gcr.io/cloud-builders/git'
   args:
+  - -C
+  - /workspace/env-request
   - checkout
   - $BRANCH_NAME
   volumes:
