@@ -125,7 +125,7 @@ steps:
   - push
   - -u
   - origin
-  - master
+  - $BRANCH_NAME
   volumes:
   - name: 'ssh'
     path: /root/.ssh
