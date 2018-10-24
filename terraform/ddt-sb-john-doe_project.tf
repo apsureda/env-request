@@ -5,7 +5,7 @@ resource "random_id" "ddt-sb-john-doe_id" {
 
 resource "google_project" "ddt-sb-john-doe" {
   name                = "dft-ddt-sb-john-doe"
-  folder_id           = ""
+  folder_id           = "121046915312"
   billing_account     = "${var.gcp_billing_account_id}"
   project_id          = "dft-ddt-sb-john-doe-${random_id.ddt-sb-john-doe_id.hex}"
 }
