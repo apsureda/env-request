@@ -1,7 +1,3 @@
-{% macro project_id(short_id) -%}
-${google_project.{{ short_id }}.project_id}
-{%- endmacro %}
-
 {% macro project_id(short_id, env) -%}
-${google_project.{{ short_id }}-{{ env }}.project_id}
+{% if env %}${google_project.{{ short_id }}-{{ env }}.project_id}{% else %}${google_project.{{ short_id }}.project_id}{% endif %}
 {%- endmacro %}
