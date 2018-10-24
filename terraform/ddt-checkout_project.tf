@@ -6,7 +6,7 @@ resource "random_id" "ddt-checkout-dev_id" {
 
 resource "google_project" "ddt-checkout-dev" {
   name                = "dft-ddt-checkout"
-  folder_id           = ""
+  folder_id           = "121046915312"
   billing_account     = "${var.gcp_billing_account_id}"
   project_id          = "dft-ddt-checkout-${random_id.ddt-checkout-dev_id.hex}"
 }
@@ -21,7 +21,7 @@ resource "random_id" "ddt-checkout-test_id" {
 
 resource "google_project" "ddt-checkout-test" {
   name                = "dft-ddt-checkout"
-  folder_id           = ""
+  folder_id           = "121046915312"
   billing_account     = "${var.gcp_billing_account_id}"
   project_id          = "dft-ddt-checkout-${random_id.ddt-checkout-test_id.hex}"
 }
@@ -36,7 +36,7 @@ resource "random_id" "ddt-checkout-prod_id" {
 
 resource "google_project" "ddt-checkout-prod" {
   name                = "dft-ddt-checkout"
-  folder_id           = ""
+  folder_id           = "121046915312"
   billing_account     = "${var.gcp_billing_account_id}"
   project_id          = "dft-ddt-checkout-${random_id.ddt-checkout-prod_id.hex}"
 }
