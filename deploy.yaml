@@ -8,7 +8,7 @@ steps:
 - name: gcr.io/apszaz-dft-commons/terraform
   args:
   - apply
-  - -var-file=params.tfvars
+  - -var-file=terraform/common_params.tfvars
   - -auto-approve
   - terraform
 
