@@ -30,7 +30,7 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-dev_encrypters" {
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }
 resource "google_kms_key_ring" "ddt-checkout-test" {
@@ -63,7 +63,7 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-test_encrypters" {
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }
 resource "google_kms_key_ring" "ddt-checkout-prod" {
@@ -96,6 +96,6 @@ resource "google_kms_crypto_key_iam_binding" "ddt-checkout-prod_encrypters" {
   role          = "roles/cloudkms.cryptoKeyEncrypter"
 
   members = [
-        "group:gcp-ddt-mamagers@dft.gov.uk",    "group:gcp-ddt-developers@dft.gov.uk",    "group:gcp-ddt-ops@dft.gov.uk",
+        "group:gcp-ddt-mamagers@apszaz.com",    "group:gcp-ddt-developers@apszaz.com",    "group:gcp-ddt-ops@apszaz.com",
   ]
 }
