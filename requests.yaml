@@ -9,16 +9,16 @@ defaults:
     region: 'europe-west2'
     billing_account: '0131D6-94FD9F-065EAB'
     team_ops:
-    - group:gcp-ddt-ops@dft.gov.uk
+    - group:gcp-ddt-ops@apszaz.com
     team_dev:
-    - group:gcp-glb-developers@dft.gov.uk
+    - group:gcp-glb-developers@apszaz.com
   ddt:
     team_dev:
-    - group:gcp-ddt-developers@dft.gov.uk
+    - group:gcp-ddt-developers@apszaz.com
     team_qa:
-    - group:gcp-ddt-qa@dft.gov.uk
+    - group:gcp-ddt-qa@apszaz.com
     team_mng:
-    - group:gcp-ddt-mamagers@dft.gov.uk
+    - group:gcp-ddt-mamagers@apszaz.com
 
 requests:
 - name: 'checkout'
@@ -32,4 +32,9 @@ requests:
 - name: 'john-doe'
   type: 'sandbox'
   dft_bu: 'ddt'
-  user_email: 'user:johndoe@dft.gov.uk'
+  user_email: 'user:alfonso@apszaz.com'
+
+- name: 'jane-doe'
+  type: 'sandbox'
+  dft_bu: 'ddt'
+  user_email: 'user:alfonso@apszaz.com'
