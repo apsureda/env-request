@@ -9,11 +9,11 @@ resource "google_project_iam_binding" "{{ context.short_id }}-{{ env }}_{{ role 
   role    = "roles/{{ role }}"
 
   members = [
-    {% for member in context['permissions'][env][role] %}
+{% for member in context['permissions'][env][role] %}
     "{{ member | replace("[CLOUDBUILD_SA]", cloudbuild_sa) }}",
-    {%- endfor %}
+{% endfor %}
   ]
 }
 
-{%- endfor %}
-{%- endfor %}
+{% endfor %}
+{% endfor %}

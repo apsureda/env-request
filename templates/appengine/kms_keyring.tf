@@ -7,11 +7,13 @@ resource "google_kms_key_ring" "{{ prj_id }}" {
   name     = "CLOUDBUILD-SECRETS"
   project  = "{{ macros.project_id(context.short_id, env) }}"
   location = "${var.gcp_region}"
+  # wait for the cloudkms API to be activated before creating the keyring
+  depends_on = [ "google_project_service.{{ prj_id }}_cloudkms" ]
 }
 
 resource "google_kms_crypto_key" "{{ prj_id }}" {
-  name            = "CLOUDBUILD-KEY"
-  key_ring        = "${google_kms_key_ring.{{ prj_id }}.id}"
+  name     = "CLOUDBUILD-KEY"
+  key_ring = "${google_kms_key_ring.{{ prj_id }}.id}"
 }
 
 # only the build pipeline can decrypt data using this key

@@ -6,13 +6,22 @@ defaults:
   global:
     force_update: 'true'
     folder: 'def_folder'
+    db_project_folder: 'DATABASES'
     region: 'europe-west2'
     billing_account: '0131D6-94FD9F-065EAB'
+    cloudsql_project_prod: 'demo-dft-db-prod'
+    cloudsql_project_nonprod: 'demo-dft-db-nonprod'
     team_ops:
     - group:gcp-ddt-ops@apszaz.com
     team_dev:
     - group:gcp-glb-developers@apszaz.com
+    team_dba:
+    - group:gcp-glb-dba@apszaz.com
   ddt:
+    cloudsql_instance_prod: 'ddt-prod'
+    cloudsql_instance_nonprod: 'ddt-nonprod'
+    cloudsql_instance_pwd_prod: 'mypassword'
+    cloudsql_instance_pwd_nonprod: 'mypassword'
     team_dev:
     - group:gcp-ddt-developers@apszaz.com
     team_qa:
@@ -21,7 +30,42 @@ defaults:
     - group:gcp-ddt-mamagers@apszaz.com
 
 requests:
+- name: 'app-data'
+  type: 'database'
+  dft_bu: 'ddt'
+  instances:
+    prod:
+      database_version: 'MYSQL_5_6'
+      user: 'root'
+      settings:
+        # see machine types here: https://cloud.google.com/sql/pricing#machine-types-pricing
+        tier: 'db-n1-standard-1'
+    nonprod:
+      user: 'root'
+      settings:
+        tier: 'db-f1-micro'
+
 - name: 'checkout'
+  type: 'appengine'
+  dft_bu: 'ddt'
+  folder: 'myfolder'
+  gae_flex: 'no'
+  source_repo: 'github-apsureda-gae-std'
+  databases:
+  - name: 'checkout-dev'
+    environment: 'dev'
+    db_project: 'app-data'
+    instance: 'nonprod'
+  - name: 'checkout-test'
+    environment: 'test'
+    db_project: 'app-data'
+    instance: 'nonprod'
+  - name: 'checkout'
+    environment: 'prod'
+    db_project: 'app-data'
+    instance: 'prod'
+
+- name: 'checkin'
   type: 'appengine'
   dft_bu: 'ddt'
   folder: 'myfolder'
@@ -33,3 +77,4 @@ requests:
   type: 'sandbox'
   dft_bu: 'ddt'
   user_email: 'user:alfonso@apszaz.com'
+
