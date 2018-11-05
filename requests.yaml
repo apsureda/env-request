@@ -5,7 +5,7 @@ config:
 defaults:
   global:
     force_update: 'true'
-    folder: 'DFTY-ORG'
+    folder: 'DFT-ORG'
     region: 'europe-west2'
     team_ops:
     - group:gcp-ddt-ops@apszaz.com
@@ -14,7 +14,7 @@ defaults:
     team_dba:
     - group:gcp-glb-dba@apszaz.com
   ddt:
-    folder: 'DFTY-ORG/DDT'
+    folder: 'DFT-ORG/DDT'
     team_dev:
     - group:gcp-ddt-developers@apszaz.com
     team_qa:
@@ -64,10 +64,9 @@ requests:
   gae_flex: 'no'
   source_repo: 'github-apsureda-gae-std'
 
-# test 4
 - name: 'john-doe'
   type: 'sandbox'
-  folder: 'DFTY-ORG/SANDBOXES'
+  folder: 'DFT-ORG/SANDBOXES'
   dft_bu: 'ddt'
   user_email: 'user:alfonso@apszaz.com'
 
