@@ -1,16 +1,12 @@
 config:
   gcs_bucket: 'apszaz-tfstate'
-  gcs_prefix: 'dft-ddt-draco'
+  gcs_prefix: 'dft-infra'
 
 defaults:
   global:
     force_update: 'true'
-    folder: 'ORG-DFT'
-    db_project_folder: 'DATABASES'
+    folder: 'DFTY-ORG'
     region: 'europe-west2'
-    billing_account: '0131D6-94FD9F-065EAB'
-    cloudsql_project_prod: 'demo-dft-db-prod'
-    cloudsql_project_nonprod: 'demo-dft-db-nonprod'
     team_ops:
     - group:gcp-ddt-ops@apszaz.com
     team_dev:
@@ -18,11 +14,7 @@ defaults:
     team_dba:
     - group:gcp-glb-dba@apszaz.com
   ddt:
-    folder: 'ORG-DFT/DDT'
-    cloudsql_instance_prod: 'ddt-prod'
-    cloudsql_instance_nonprod: 'ddt-nonprod'
-    cloudsql_instance_pwd_prod: 'mypassword'
-    cloudsql_instance_pwd_nonprod: 'mypassword'
+    folder: 'DFTY-ORG/DDT'
     team_dev:
     - group:gcp-ddt-developers@apszaz.com
     team_qa:
@@ -75,7 +67,7 @@ requests:
 # test 4
 - name: 'john-doe'
   type: 'sandbox'
-  folder: 'ORG-DFT/SANDBOXES'
+  folder: 'DFTY-ORG/SANDBOXES'
   dft_bu: 'ddt'
   user_email: 'user:alfonso@apszaz.com'
 
