@@ -9,7 +9,7 @@ resource "random_id" "{{ prj_id }}_id" {
 
 resource "google_project" "{{ prj_id }}" {
   name                = "{{ context.project_id }}-{{ env }}"
-  folder_id           = "{{ context.folder_id }}"
+  folder_id           = "${google_folder.{{ context.folder_id }}.id}"
   billing_account     = "${var.gcp_billing_account_id}"
   project_id          = "{{ context.project_id }}-{{ env }}-${random_id.{{ prj_id }}_id.hex}"
 }

@@ -5,7 +5,7 @@ config:
 defaults:
   global:
     force_update: 'true'
-    folder: 'def_folder'
+    folder: 'ORG-DFT'
     db_project_folder: 'DATABASES'
     region: 'europe-west2'
     billing_account: '0131D6-94FD9F-065EAB'
@@ -18,6 +18,7 @@ defaults:
     team_dba:
     - group:gcp-glb-dba@apszaz.com
   ddt:
+    folder: 'ORG-DFT/DDT'
     cloudsql_instance_prod: 'ddt-prod'
     cloudsql_instance_nonprod: 'ddt-nonprod'
     cloudsql_instance_pwd_prod: 'mypassword'
@@ -68,13 +69,13 @@ requests:
 - name: 'checkin'
   type: 'appengine'
   dft_bu: 'ddt'
-  folder: 'myfolder'
   gae_flex: 'no'
   source_repo: 'github-apsureda-gae-std'
 
 # test 4
 - name: 'john-doe'
   type: 'sandbox'
+  folder: 'ORG-DFT/SANDBOXES'
   dft_bu: 'ddt'
   user_email: 'user:alfonso@apszaz.com'
 
