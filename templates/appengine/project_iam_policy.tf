@@ -5,6 +5,11 @@
 {% for role in context['permissions'][env] %}
 
 resource "google_project_iam_binding" "{{ context.short_id }}-{{ env }}_{{ role | replace(".", "_") }}" {
+{% if '[CLOUDBUILD_SA]' in context['permissions'][env][role] %}
+  # wait for the cloudbuild service account to be created
+  depends_on = [ "google_project_service.{{ prj_id }}_cloudbuild" ]
+  
+{% endif %}
   project = "{{ macros.project_id(context.short_id, env) }}"
   role    = "roles/{{ role }}"
 

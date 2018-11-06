@@ -172,16 +172,6 @@ def prepare_context(requests, context):
           db_request['instances'][db_instance]['databases'] = []
         db_request['instances'][db_instance]['databases'].append(database)
 
-def get_short_id(req_config):
-  base_name = ''
-  if req_config['type'] == 'appengine':
-    base_name = '%s-%s' % (req_config['dft_bu'], req_config['name'])
-  elif req_config['type'] == 'sandbox':
-    base_name = '%s-sb-%s' % (req_config['dft_bu'], req_config['name'])
-  elif req_config['type'] == 'database':
-    base_name = 'db-%s' % (req_config['name'])
-  return base_name 
-
 def prepare_folders(requests):
   # full path -> folder struct dictionary
   all_folders = {}
@@ -229,8 +219,40 @@ def prepare_folders(requests):
       parent_path = current_path
   return all_folders
 
+def get_short_id(req_config):
+  base_name = ''
+  if req_config['type'] == 'appengine':
+    base_name = '%s-%s' % (req_config['dft_bu'], req_config['name'])
+  elif req_config['type'] == 'sandbox':
+    base_name = '%s-sb-%s' % (req_config['dft_bu'], req_config['name'])
+  elif req_config['type'] == 'database':
+    base_name = 'db-%s' % (req_config['name'])
+  return base_name.lower()
+
 def get_project_id(req_config):
-  return 'dft-' + get_short_id(req_config)
+  project_id = 'dft-' + get_short_id(req_config)
+  # check if the full project ID, with the environment and random suffixes added 
+  # meets the GCP project ID requirements
+  sample_name = project_id
+  project_id_length = len(sample_name)
+  # appengine projects have a -dev, -test, -prod suffix
+  if req_config['type'] in ['appengine']:
+    sample_name += '-prod'
+  # random suffixes add an additionad 5 chars (-ABCD)
+  if req_config['random_suffix'] == 'true':
+    sample_name += '-abcd'
+  # check the project ID length
+  if len(sample_name) > 30:
+    logging.error('invalid project ID: \'%s\'. Project ID must be between 6 and 30 characters.' % (sample_name))
+    sys.exit(1)
+  # check the project ID respects naming constraints
+  if not re.match('^[a-z].*[a-z0-9]$', sample_name):
+    logging.error('invalid project ID: \'%s\'. Project IDs must start with a lowercase letter and end with a letter or number.' % (sample_name))
+    sys.exit(1)
+  if not re.match('^[a-z0-9\-]+$', sample_name):
+    logging.error('invalid project ID: \'%s\'. Project IDs can have lowercase letters, digits, or hyphens.' % (sample_name))
+    sys.exit(1)
+  return project_id
 
 def generate_tf_files(template_dir, tf_out, tpl_type, prefix, context, replace):
   # initialize jinja2 environment for tf templates

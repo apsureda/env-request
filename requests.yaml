@@ -4,7 +4,11 @@ config:
 
 defaults:
   global:
+    # set to true at the global, team or request level to overrite already
+    # generated files for a request
     force_update: 'true'
+    # enable to add a random suffix to project IDs
+    random_suffix: 'true'
     folder: 'DFT-ORG'
     region: 'europe-west2'
     team_ops:
@@ -26,6 +30,7 @@ requests:
 - name: 'app-data'
   type: 'database'
   dft_bu: 'ddt'
+  folder: 'DFT-ORG/DATABASES'
   instances:
     prod:
       database_version: 'MYSQL_5_6'
@@ -41,9 +46,8 @@ requests:
 - name: 'checkout'
   type: 'appengine'
   dft_bu: 'ddt'
-  folder: 'myfolder'
   gae_flex: 'no'
-  source_repo: 'github-apsureda-gae-std'
+  source_repo: 'github_apsureda_gae-std'
   databases:
   - name: 'checkout-dev'
     environment: 'dev'
@@ -58,13 +62,13 @@ requests:
     db_project: 'app-data'
     instance: 'prod'
 
-- name: 'checkin'
+- name: 'nodb-prj'
   type: 'appengine'
   dft_bu: 'ddt'
   gae_flex: 'no'
-  source_repo: 'github-apsureda-gae-std'
+  source_repo: 'github_apsureda_gae-std'
 
-- name: 'john-doe'
+- name: 'sitopub'
   type: 'sandbox'
   folder: 'DFT-ORG/SANDBOXES'
   dft_bu: 'ddt'
