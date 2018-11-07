@@ -1,7 +1,6 @@
 {% import 'macros.j2' as macros %}
-
 {% for inst_name, inst_data in context['instances'].iteritems() %}
-
+# Cloud SQL instance: {{ inst_name }}
 resource "google_sql_database_instance" "{{ context.short_id }}_{{ inst_name }}" {
   project  = "{{ macros.project_id(context.short_id) }}"
   name     = "{{ inst_name }}"
@@ -18,16 +17,19 @@ resource "google_sql_database_instance" "{{ context.short_id }}_{{ inst_name }}"
   }
 {% endif %}
 }
-{%  if inst_data.user %}
-resource "google_sql_user" "{{ context.short_id }}_{{ inst_name }}_{{ inst_data.user }}" {
-  name     = "{{ inst_data.user }}"
+{%  if inst_data.users %}
+{% for user in inst_data.users %}
+
+resource "google_sql_user" "{{ context.short_id }}_{{ inst_name }}_{{ user }}" {
+  name     = "{{ user }}"
   instance = "${google_sql_database_instance.{{ context.short_id }}_{{ inst_name }}.name}"
-  password = "changeme"
   project  = "{{ macros.project_id(context.short_id) }}"
 }
+{% endfor %}
 {% endif %}
 {% if inst_data.databases %}
 {% for database in inst_data.databases %}
+
 resource "google_sql_database" "{{ context.short_id }}_{{ database.name }}" {
   name      = "{{ database.name }}"
   instance  = "${google_sql_database_instance.{{ context.short_id }}_{{ inst_name }}.name}"
@@ -35,4 +37,5 @@ resource "google_sql_database" "{{ context.short_id }}_{{ database.name }}" {
 }
 {% endfor %}
 {% endif %}
+
 {% endfor %}
