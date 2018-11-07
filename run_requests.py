@@ -30,7 +30,7 @@ import re
 TEMPLATE_FOLDER = '/workspace/env-request/'
 TF_OUT_FOLDER = TEMPLATE_FOLDER + 'terraform/'
 REQUESTS_FILE = 'requests.yaml'
-tf_config = None
+CONFIG_FILE = 'config.yaml'
 
 def parse_args(argv):
   parser = argparse.ArgumentParser()
@@ -40,6 +40,8 @@ def parse_args(argv):
                       help='directory where the generated Terraform files should be written')
   parser.add_argument('--requests', default=REQUESTS_FILE,
                       help='yaml file containing the environment creation requests')
+  parser.add_argument('--config', default=CONFIG_FILE,
+                      help='yaml file containing the common configuration settings')
   return parser.parse_args(argv)
 
 def get_requests(requests_file):
@@ -48,9 +50,8 @@ def get_requests(requests_file):
   req_stream = yaml.load_all(stream)
   all_requests = {}
   defaults = None
-  allowed_first_level = ['config', 'defaults', 'requests']
+  allowed_first_level = ['defaults', 'requests']
   mandatory_req_fields = ['name', 'type']
-  global tf_config
   # YAML files can have multiple "documents" go through the file and append all the
   # elements in a single map
   for doc in req_stream:
@@ -59,13 +60,6 @@ def get_requests(requests_file):
       if k not in allowed_first_level:
         logging.error('invalid key \'%s\' in requests file' % (k))
         sys.exit(1)
-      # get the config section, which must appear only once
-      if k == 'config':
-        if not tf_config:
-          tf_config = v
-        else:
-          logging.error('\'%s\' defined twice in requests file' % (k))
-          sys.exit(1)
       # the defaults section must appear only once
       if k == 'defaults':
         if not defaults:
@@ -108,6 +102,27 @@ def get_requests(requests_file):
   for v in all_requests.values():
     prepare_context(all_requests, v)
   return all_requests
+
+def get_config(config_file):
+  # open the requests file, which is in YAML format
+  stream = open(config_file, "r")
+  config_stream = yaml.load_all(stream)
+  config_params = {}
+  mandatory_fields = ['gcs_bucket', 'gcs_prefix']
+  # YAML files can have multiple "documents" go through the file and append all the
+  # elements in a single map
+  for doc in config_stream:
+    for k,v in doc.items():
+      if k in config_params:
+        logging.error('\'%s\' defined twice in config file' % (k))
+        sys.exit(1)
+      config_params[k] = v
+  # check that we have all the required config params
+  for k in mandatory_fields:
+    if not k in config_params:
+      logging.error('missing required param in config file: \'%s\'' % (k))
+      sys.exit(1)
+  return config_params
 
 def prepare_context(requests, context):
   if context['type'] in ['sandbox', 'appengine', 'database']:
@@ -239,7 +254,7 @@ def get_project_id(req_config):
   if req_config['type'] in ['appengine']:
     sample_name += '-prod'
   # random suffixes add an additionad 5 chars (-ABCD)
-  if req_config['random_suffix'] == 'true':
+  if 'random_suffix' in req_config and req_config['random_suffix'] == 'true':
     sample_name += '-abcd'
   # check the project ID length
   if len(sample_name) > 30:
@@ -277,7 +292,6 @@ def generate_tf_files(template_dir, tf_out, tpl_type, prefix, context, replace):
         return False
   # apply the selected templates
   logging.info('using context: %s' % (json.dumps(context, sort_keys=True)))
-
   for tplfile in template_list:
     # remove junk files
     if tplfile.startswith('.'):
@@ -290,7 +304,7 @@ def generate_tf_files(template_dir, tf_out, tpl_type, prefix, context, replace):
     out_file.close()
   return True
 
-def main(template_dir, tf_out, requests_file):
+def main(template_dir, tf_out, requests_file, config_file):
   # load the environment requests from the requests file
   envrequests = get_requests(requests_file)
 
@@ -298,6 +312,8 @@ def main(template_dir, tf_out, requests_file):
   if not os.path.exists(tf_out):
     os.makedirs(tf_out)
 
+  # read configuration file
+  tf_config = get_config(config_file)
   # get the likst of folders
   folders = prepare_folders(envrequests)
   # and add it to the context to be used in common files
@@ -321,4 +337,4 @@ if __name__ == '__main__':
   FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
   logging.basicConfig(format=FORMAT)
   args = parse_args(sys.argv[1:])
-  main(args.template_dir, args.tf_out, args.requests)
+  main(args.template_dir, args.tf_out, args.requests, args.config)

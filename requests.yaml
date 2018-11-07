@@ -1,7 +1,3 @@
-config:
-  gcs_bucket: 'apszaz-tfstate'
-  gcs_prefix: 'dft-infra'
-
 defaults:
   global:
     # set to true at the global, team or request level to overrite already

@@ -1,0 +1,2 @@
+gcs_bucket: 'apszaz-tfstate'
+gcs_prefix: 'dft-infra'
