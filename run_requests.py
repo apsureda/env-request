@@ -254,7 +254,7 @@ def get_project_id(req_config):
   if req_config['type'] in ['appengine']:
     sample_name += '-prod'
   # random suffixes add an additionad 5 chars (-ABCD)
-  if 'random_suffix' in req_config and req_config['random_suffix'] == 'true':
+  if 'random_suffix' in req_config and req_config['random_suffix']:
     sample_name += '-abcd'
   # check the project ID length
   if len(sample_name) > 30:
@@ -327,7 +327,7 @@ def main(template_dir, tf_out, requests_file, config_file):
     logging.info('processing request: \'%s\'' % (k))
     # ask for file regeneration if indicate din requests file
     regenerate = False
-    if 'force_update' in v and v['force_update'] == 'true':
+    if 'force_update' in v and v['force_update']:
       regenerate = True
     file_type = v['type']
     generate_tf_files(template_dir, tf_out, file_type, v['short_id'], v, regenerate)
