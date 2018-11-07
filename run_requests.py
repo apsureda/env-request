@@ -138,6 +138,12 @@ def prepare_context(requests, context):
     permissions['viewer'] = context['team_dev']
     context['permissions'] = permissions
   elif context['type'] == 'database':
+    # check that the database instance names only contain lowercase letters, numbers, and hyphens.
+    for inst in context['instances']:
+      if not re.match('^[a-z0-9][a-z0-9\-]*$', inst):
+        logging.error('invalid database instamnce name: \'%s\'. Must contain lowercase letters, '
+                      'numbers, and hyphens ans start with a letter' % (inst))
+        sys.exit(1)        
     # In database projects, the DBA team members have admin access to Cloud SQL instances
     permissions = {}
     permissions['cloudsql.admin'] = context['team_dba']
@@ -241,7 +247,7 @@ def get_short_id(req_config):
   elif req_config['type'] == 'sandbox':
     base_name = '%s-sb-%s' % (req_config['dft_bu'], req_config['name'])
   elif req_config['type'] == 'database':
-    base_name = 'db-%s' % (req_config['name'])
+    base_name = '%s-db-%s' % (req_config['dft_bu'], req_config['name'])
   return base_name.lower()
 
 def get_project_id(req_config):
@@ -249,7 +255,6 @@ def get_project_id(req_config):
   # check if the full project ID, with the environment and random suffixes added 
   # meets the GCP project ID requirements
   sample_name = project_id
-  project_id_length = len(sample_name)
   # appengine projects have a -dev, -test, -prod suffix
   if req_config['type'] in ['appengine']:
     sample_name += '-prod'
