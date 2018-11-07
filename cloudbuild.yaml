@@ -56,6 +56,7 @@ steps:
   args:
   - run_requests.py
   - --requests=requests.yaml
+  - --config=config.yaml
   - --template-dir=templates
   - --tf-out=/workspace/env-request/terraform
 
