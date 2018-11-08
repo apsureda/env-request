@@ -28,3 +28,10 @@ requests:
   folder: DFT-ORG/SANDBOXES
   dft_bu: ddt
   user_email: user:alfonso@apszaz.com
+
+- name: nodb-prj
+  type: appengine
+  dft_bu: ddt
+  gae_flex: false
+  source_repo: github_apsureda_gae-std
+
