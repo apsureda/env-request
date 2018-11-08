@@ -35,3 +35,38 @@ requests:
   gae_flex: false
   source_repo: github_apsureda_gae-std
 
+- name: app-data
+  type: database
+  dft_bu: ddt
+  folder: DFT-ORG/DATABASES
+  instances:
+    prod:
+      database_version: MYSQL_5_6
+      users: ['root']
+      settings:
+        # see machine types here: https://cloud.google.com/sql/pricing#machine-types-pricing
+        tier: db-n1-standard-1
+    nonprod:
+      users: ['user1', 'user2']
+      settings:
+        tier: db-f1-micro
+
+- name: checkout
+  type: appengine
+  dft_bu: ddt
+  gae_flex: false
+  source_repo: github_apsureda_gae-std
+  databases:
+  - name: checkout-dev
+    environment: dev
+    db_project: app-data
+    instance: nonprod
+  - name: checkout-test
+    environment: test
+    db_project: app-data
+    instance: nonprod
+  - name: checkout
+    environment: prod
+    db_project: app-data
+    instance: prod
+
