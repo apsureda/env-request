@@ -6,7 +6,7 @@ resource "random_id" "ddt-sb-jsnow_id" {
 
 resource "google_project" "ddt-sb-jsnow" {
   name            = "dft-ddt-sb-jsnow"
-  folder_id       = "${google_folder.DFT-ORG_SANDBOXES.id}"
+  folder_id       = "${google_folder.DFT-ORG_DDT_SANDBOXES.id}"
   billing_account = "${var.gcp_billing_account_id}"
   project_id      = "dft-ddt-sb-jsnow-${random_id.ddt-sb-jsnow_id.hex}"
 }
