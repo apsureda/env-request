@@ -25,7 +25,7 @@ defaults:
 requests:
 - name: jsnow
   type: sandbox
-  folder: DFT-ORG/SANDBOXES
+  folder: DFT-ORG/DDT/SANDBOXES
   dft_bu: ddt
   user_email: user:alfonso@apszaz.com
 

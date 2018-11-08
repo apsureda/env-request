@@ -8,8 +8,8 @@ resource "google_folder" "DFT-ORG_DDT" {
   parent       = "${google_folder.DFT-ORG.name}"
 }
 
-resource "google_folder" "DFT-ORG_SANDBOXES" {
+resource "google_folder" "DFT-ORG_DDT_SANDBOXES" {
   display_name = "SANDBOXES"
-  parent       = "${google_folder.DFT-ORG.name}"
+  parent       = "${google_folder.DFT-ORG_DDT.name}"
 }
 
