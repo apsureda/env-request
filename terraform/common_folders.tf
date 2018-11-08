@@ -13,3 +13,8 @@ resource "google_folder" "DFT-ORG_DDT_SANDBOXES" {
   parent       = "${google_folder.DFT-ORG_DDT.name}"
 }
 
+resource "google_folder" "DFT-ORG_DATABASES" {
+  display_name = "DATABASES"
+  parent       = "${google_folder.DFT-ORG.name}"
+}
+
