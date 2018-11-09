@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # IP od the project that will contain the CICD tools
-PROJECT="apszaz-dft-cicd-test3"
+PROJECT="apszaz-dft-cicd-test4"
 # Folder ID where the CICD project will be located
 FOLDER="815952447001"
 # Billing and organization IDs.
@@ -52,7 +52,7 @@ create_build_trigger() {
   BRANCH=$3
   FILENAME=$4
   DESCRIPTION=$5
-  INT_REPONAME=$(echo $REPONAME | sed 's/git@github.com:/github-/' | sed 's/\//-/')
+  INT_REPONAME=$(echo $REPONAME | sed 's/git@github.com:/github_/' | sed 's/\//_/')
   BODY=$(cat <<EOF
   {
     "triggerTemplate": {
