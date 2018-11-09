@@ -75,8 +75,8 @@ access_token=$(gcloud auth application-default print-access-token)
 }
 
 echo "Creating build triggers"
-create_build_trigger $PROJECT $GITHUB_REPO "request-.*" "cloudbuild_tf_plan.yaml" "Update terrform configuration and run terraform plan."
-create_build_trigger $PROJECT $GITHUB_REPO "master" "cloudbuild_tf_apply.yaml" "Apply the current terrform configuration."
+create_build_trigger $PROJECT $GITHUB_REPO "request-.*" "cloudbuild_tf_plan.yaml" "Update terraform configuration and run terraform plan."
+create_build_trigger $PROJECT $GITHUB_REPO "master" "cloudbuild_tf_apply.yaml" "Apply the current terraform configuration."
 
 # Create a crypoKey for the 
 echo "Creating a cryptographic key for the build pipeline"
@@ -98,7 +98,6 @@ done
 #          --keyring=CLOUDBUILD-SECRETS --key=CLOUDBUILD-KEY --project=$PROJECT
 # more details on configuring github access:
 #   https://cloud.google.com/cloud-build/docs/access-private-github-repos
-
 
 # Create a GCS bucket for terraform remote storage
 echo "Creating GCS bucket for the terraform remote state"
