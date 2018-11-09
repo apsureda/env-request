@@ -13,6 +13,8 @@ defaults:
     - group:gcp-glb-developers@apszaz.com
     team_dba:
     - group:gcp-glb-dba@apszaz.com
+    team_cicd:
+    - group:gcp-global-cicd@apszaz.com
   ddt:
     folder: DFT-ORG/DDT
     team_dev:

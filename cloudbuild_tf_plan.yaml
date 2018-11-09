@@ -52,7 +52,7 @@ steps:
 
 # run the environments requests file, and issue output to the terraform folder
 # in the branch of the current request.
-- name: 'gcr.io/apszaz-dft-commons/dft-python'
+- name: 'gcr.io/$PROJECT_ID/dft-python'
   args:
   - run_requests.py
   - --requests=requests.yaml
@@ -61,13 +61,13 @@ steps:
   - --tf-out=/workspace/env-request/terraform
 
 # initialize terraform using the updated terraform folder.
-- name: gcr.io/apszaz-dft-commons/terraform
+- name: gcr.io/$PROJECT_ID/terraform
   args:
   - init
   - /workspace/env-request/terraform
 
 # run a terraform plan to check what changes will be made.
-- name: gcr.io/apszaz-dft-commons/terraform
+- name: gcr.io/$PROJECT_ID/terraform
   args:
   - plan
   - -no-color
