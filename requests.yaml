@@ -1,6 +1,6 @@
 defaults:
   global:
-    # set to true at the global, team or request level to overrite already
+    # set to true at the global, team or request level to overwrite already
     # generated files for a request
     force_update: true
     # enable to add a random suffix to project IDs
