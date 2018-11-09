@@ -154,6 +154,7 @@ def prepare_context(requests, context):
     permissions['dev']['appengine.deployer'] = context['team_dev'] 
     permissions['dev']['appengine.serviceAdmin'] = context['team_dev'] 
     permissions['dev']['appengine.appAdmin'] = context['team_ops'] + context['team_mng'] 
+    permissions['dev']['cloudbuild.builds.editor'] = context['team_ops'] + context['team_mng'] 
     # use a placeholder for the cloudbuild service account. Will be replaced in jinja tempolate.
     permissions['dev']['appengine.appAdmin'].extend(['[CLOUDBUILD_SA]'])
     permissions['test'] = {}
@@ -161,11 +162,13 @@ def prepare_context(requests, context):
     permissions['test']['appengine.serviceAdmin'] = context['team_ops'] 
     permissions['test']['appengine.appViewer'] = context['team_mng'] 
     permissions['test']['appengine.appAdmin'] = ['[CLOUDBUILD_SA]']
+    permissions['test']['cloudbuild.builds.editor'] = context['team_ops'] + context['team_mng'] 
     permissions['prod'] = {}
     permissions['prod']['appengine.codeViewer'] = context['team_dev'] + context['team_qa']
     permissions['prod']['appengine.serviceAdmin'] = context['team_ops'] 
     permissions['prod']['appengine.appViewer'] = context['team_mng']
     permissions['prod']['appengine.appAdmin'] = ['[CLOUDBUILD_SA]']
+    permissions['prod']['cloudbuild.builds.editor'] = context['team_ops'] + context['team_mng'] 
     context['permissions'] = permissions
     # set up databases
     if 'databases' in context:
