@@ -34,7 +34,8 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
   - clone
-  - git@github.com:apsureda/env-request
+  - ${_GITHUB_REPO}
+  - tmp-requests 
   volumes:
   - name: 'ssh'
     path: /root/.ssh
@@ -43,7 +44,7 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
   - -C
-  - /workspace/env-request
+  - /workspace/tmp-requests
   - checkout
   - $BRANCH_NAME
   volumes:
@@ -58,27 +59,27 @@ steps:
   - --requests=requests.yaml
   - --config=config.yaml
   - --template-dir=templates
-  - --tf-out=/workspace/env-request/terraform
+  - --tf-out=/workspace/tmp-requests/terraform
 
 # initialize terraform using the updated terraform folder.
 - name: gcr.io/$PROJECT_ID/terraform
   args:
   - init
-  - /workspace/env-request/terraform
+  - /workspace/tmp-requests/terraform
 
 # run a terraform plan to check what changes will be made.
 - name: gcr.io/$PROJECT_ID/terraform
   args:
   - plan
   - -no-color
-  - -var-file=/workspace/env-request/terraform/common_params.tfvars
-  - /workspace/env-request/terraform
+  - -var-file=/workspace/tmp-requests/terraform/common_params.tfvars
+  - /workspace/tmp-requests/terraform
 
 # add the terraform config changes for commit.
 - name: 'gcr.io/cloud-builders/git'
   args:
   - -C
-  - /workspace/env-request
+  - /workspace/tmp-requests
   - add
   - terraform
   volumes:
@@ -91,7 +92,7 @@ steps:
   - config
   - --global
   - user.email
-  - "dft-cicd-pipeline@dft.gov.uk"
+  - "gcp-global-cicd@apszaz.com"
   volumes:
   - name: 'ssh'
     path: /root/.ssh
@@ -110,9 +111,9 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
   - -C
-  - /workspace/env-request
+  - /workspace/tmp-requests
   - commit
-  - --author="John Doe <john@doe.org>"
+  - --author="Build Pipeline <gcp-global-cicd@apszaz.com>"
   - --file=/workspace/terraform_output.txt
   volumes:
   - name: 'ssh'
@@ -122,7 +123,7 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
   - -C
-  - /workspace/env-request
+  - /workspace/tmp-requests
   - push
   - -u
   - origin
