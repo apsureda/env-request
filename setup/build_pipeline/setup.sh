@@ -33,7 +33,7 @@ GCP_SERVICES="sql-component.googleapis.com \
             sourcerepo.googleapis.com"
 
 # To see grantable roles:  gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/$PROJECT
-#gcloud services list --project=$PROJECT # See list of enabled services
+# gcloud services list --project=$PROJECT # See list of enabled services
 gcloud services enable $GCP_SERVICES --project=$PROJECT
 
 # Grant the necessary permissions to the CICD group at the organization level.
