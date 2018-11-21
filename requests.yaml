@@ -24,3 +24,10 @@ defaults:
     team_mng:
     - group:gcp-ddt-mamagers@apszaz.com
 
+requests:
+- name: jsnow
+  type: sandbox
+  folder: DFT-ORG/DDT/SANDBOXES
+  dft_bu: ddt
+  user_email: user:alfonso@apszaz.com
+
