@@ -1,0 +1,133 @@
+steps:
+
+# Decrypt the file containing the SSH key for GitHub authentication
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=id_rsa.enc
+  - --plaintext-file=/root/.ssh/id_rsa
+  - --location=global
+  - --keyring=CLOUDBUILD-SECRETS
+  - --key=github-key
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Set up git with key and domain.
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    chmod 600 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    Hostname github.com
+     IdentityFile /root/.ssh/id_rsa
+    EOF
+    mv known_hosts /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# clone the git repository. We will push some changes to it.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - clone
+  - ${_GITHUB_REPO}
+  - tmp-requests 
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# checkout the branch this request came from
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - checkout
+  - $BRANCH_NAME
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# run the environments requests file, and issue output to the terraform folder
+# in the branch of the current request.
+- name: 'gcr.io/$PROJECT_ID/dft-python'
+  args:
+  - run_requests.py
+  - --requests=requests.yaml
+  - --config=config.yaml
+  - --template-dir=templates
+  - --tf-out=/workspace/tmp-requests/terraform
+
+# initialize terraform using the updated terraform folder.
+- name: gcr.io/$PROJECT_ID/terraform
+  args:
+  - init
+  - /workspace/tmp-requests/terraform
+
+# run a terraform plan to check what changes will be made.
+- name: gcr.io/$PROJECT_ID/terraform
+  args:
+  - plan
+  - -no-color
+  - -var-file=/workspace/tmp-requests/terraform/common_params.tfvars
+  - /workspace/tmp-requests/terraform
+
+# add the terraform config changes for commit.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - add
+  - terraform
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Set the user email and name for the commit
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.email
+  - "[TEAM_CICD]"
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.name
+  - "Automated Build Pipeline"
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# commit the changes, adding the output from the terraform plan as commit comment.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - commit
+  - --author="Build Pipeline <[TEAM_CICD]>"
+  - --file=/workspace/terraform_output.txt
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# push the changes
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - push
+  - -u
+  - origin
+  - $BRANCH_NAME
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh

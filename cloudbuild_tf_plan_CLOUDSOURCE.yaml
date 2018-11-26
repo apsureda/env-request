@@ -1,0 +1,86 @@
+steps:
+
+# clone the git repository. We will push some changes to it.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - source
+  - repos
+  - clone
+  - ${_GIT_REPO}
+  - tmp-requests 
+  - --project=$PROJECT_ID
+
+# checkout the branch this request came from
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - checkout
+  - $BRANCH_NAME
+
+# run the environments requests file, and issue output to the terraform folder
+# in the branch of the current request.
+- name: 'gcr.io/$PROJECT_ID/dft-python'
+  args:
+  - run_requests.py
+  - --requests=requests.yaml
+  - --config=config.yaml
+  - --template-dir=templates
+  - --tf-out=/workspace/tmp-requests/terraform
+
+# initialize terraform using the updated terraform folder.
+- name: gcr.io/$PROJECT_ID/terraform
+  args:
+  - init
+  - /workspace/tmp-requests/terraform
+
+# run a terraform plan to check what changes will be made.
+- name: gcr.io/$PROJECT_ID/terraform
+  args:
+  - plan
+  - -no-color
+  - -var-file=/workspace/tmp-requests/terraform/common_params.tfvars
+  - /workspace/tmp-requests/terraform
+
+# add the terraform config changes for commit.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - add
+  - terraform
+
+# Set the user email and name for the commit
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.email
+  - "[TEAM_CICD]"
+
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - config
+  - --global
+  - user.name
+  - "Automated Build Pipeline"
+
+# commit the changes, adding the output from the terraform plan as commit comment.
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - commit
+  - --author="Build Pipeline <[TEAM_CICD]>"
+  - --file=/workspace/terraform_output.txt
+
+# push the changes
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - -C
+  - /workspace/tmp-requests
+  - push
+  - -u
+  - origin
+  - $BRANCH_NAME
+
